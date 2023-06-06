@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.vereskul.tc51versusxml.presentation.ui.online_order.OnlineOrderViewModel" />
+    </data>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.online_order.OnlineOrderFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:id="@+id/main_online_order_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/order_supplier_selector"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:autofillHints="name"
+                        android:text="@{viewmodel.currentOrder.supplier}"
+                        android:hint="@string/select_supplier"
+                        android:inputType="textPersonName"
+                        android:minHeight="48dp" />
+
+                    <AutoCompleteTextView
+                        android:id="@+id/order_stock_selector"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:autofillHints="name"
+                        android:text="@{viewmodel.currentOrder.stock}"
+                        android:hint="@string/select_stock"
+                        android:inputType="textPersonName"
+                        android:minHeight="48dp" />
+
+                    <EditText
+                        android:id="@+id/order_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:autofillHints="creditCardExpirationDate"
+                        android:hint="@string/select_order_date"
+                        app:setLocalDateTime="@{viewmodel.currentOrder.date}"
+                        android:inputType="date"
+                        android:minHeight="48dp" />
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/online_order_tablayout"
+                        style="@style/Widget.MaterialComponents.TabLayout.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:contentDescription="@null"
+                        app:tabMode="scrollable" />
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/online_goods_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/order_sum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:text="@{String.valueOf(viewmodel.totalSum)}"
+                        tools:text="Підсумок 1000.00 грн" />
+
+                    <CheckBox
+                        android:id="@+id/check_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/item_qty_is_right" />
+
+                    <Button
+                        android:id="@+id/send_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="@string/save_order" />
+
+                </LinearLayout>
+            </ScrollView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floating_ab_add_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/black"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:focusable="true"
+                android:src="@drawable/add_item"
+                android:tintMode="@color/white"
+                android:tooltipText="@string/add_item"
+                app:layout_constraintBottom_toBottomOf="@id/main_online_order_layout"
+                app:layout_constraintEnd_toEndOf="@id/main_online_order_layout" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</layout>

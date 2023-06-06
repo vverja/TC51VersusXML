@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/filter_new_item"
+        android:title="Почати"
+        android:icon="@drawable/begin_work"
+        />
+    <item android:id="@+id/filter_closed_item"
+        android:title="Закінчити"
+        android:icon="@drawable/end_work"
+        />
+    <item android:id="@+id/filter_in_work_item"
+        android:title="Закрити"
+        android:icon="@drawable/close"
+        />
+</menu>
