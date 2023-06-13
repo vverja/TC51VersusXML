@@ -53,5 +53,9 @@
     <string name="save_order">Зберегти накладну</string>
     <string name="item_qty_is_right">Кількість товарів вірна</string>
     <string name="add_item">Додати товар</string>
+    <string name="new_order">Нова накладна</string>
+    <string name="supplier_name_error">Невірно вказан постачальник</string>
+    <string name="stock_name_error">Назва складу невірна</string>
+    <string name="date_must_be_today">Дата повинна бути сьогоднішньою</string>
 
 </resources>

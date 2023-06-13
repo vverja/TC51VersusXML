@@ -10,8 +10,12 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.vereskul.tc51versusxml.databinding.FragmentOnlineOrderGoodsItemBinding
 import com.vereskul.tc51versusxml.domain.models.GoodsModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
 class OnlineOrderGoodsItemFragment : Fragment() {
@@ -54,6 +58,8 @@ class OnlineOrderGoodsItemFragment : Fragment() {
             ).also {adapter ->
                 binding.selectItem.setAdapter(adapter)
             }
+
+            formStateObserver()
         }
 
         binding.selectItem.onItemClickListener =
@@ -67,6 +73,14 @@ class OnlineOrderGoodsItemFragment : Fragment() {
                 }
             }
 
+    }
+
+    private fun formStateObserver() = lifecycleScope.launch {
+        viewModel.formState.collect{ formState ->
+            formState.goodsListError?.let {
+                Snackbar.make(binding.root, getString(it), Snackbar.LENGTH_SHORT).show()
+            }
+        }
     }
 
     companion object {

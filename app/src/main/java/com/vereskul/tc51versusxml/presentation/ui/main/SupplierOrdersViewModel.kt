@@ -2,19 +2,18 @@ package com.vereskul.tc51versusxml.presentation.ui.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.vereskul.tc51versusxml.repository.OrdersRepositoryImpl
+import com.vereskul.tc51versusxml.data.repository.OrdersRepositoryImpl
 
-import com.vereskul.tc51versusxml.database.AppDb
-import com.vereskul.tc51versusxml.domain.models.OrderStatus
+import com.vereskul.tc51versusxml.data.database.AppDb
 import com.vereskul.tc51versusxml.domain.models.SupplierOrderModel
 import com.vereskul.tc51versusxml.domain.usecases.orders_case.*
-import com.vereskul.tc51versusxml.network.ApiFactory
+import com.vereskul.tc51versusxml.data.network.ApiFactory
 import kotlinx.coroutines.launch
 
 class SupplierOrdersViewModel(application: Application):AndroidViewModel(application) {
     private val repository = OrdersRepositoryImpl.getInstance(
         AppDb.getInstance(application),
-        ApiFactory.apiService!!
+        ApiFactory.apiService
     )
 
     private val getAllOrdersInStockUseCase = GetOrdersByStockIdUseCase(repository)

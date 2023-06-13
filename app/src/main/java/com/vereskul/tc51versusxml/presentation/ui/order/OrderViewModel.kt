@@ -4,18 +4,18 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.vereskul.tc51versusxml.database.AppDb
+import com.vereskul.tc51versusxml.data.database.AppDb
 import com.vereskul.tc51versusxml.domain.models.SupplierOrderModel
 import com.vereskul.tc51versusxml.domain.usecases.orders_case.BeginWorkUseCase
 import com.vereskul.tc51versusxml.domain.usecases.orders_case.EndWorkUseCase
 import com.vereskul.tc51versusxml.domain.usecases.orders_case.GetOrderByIdUseCase
-import com.vereskul.tc51versusxml.network.ApiFactory
-import com.vereskul.tc51versusxml.repository.OrdersRepositoryImpl
+import com.vereskul.tc51versusxml.data.network.ApiFactory
+import com.vereskul.tc51versusxml.data.repository.OrdersRepositoryImpl
 
 class OrderViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = OrdersRepositoryImpl.getInstance(
         AppDb.getInstance(application),
-        ApiFactory.apiService!!
+        ApiFactory.apiService
     )
 
     private val getOrderByIdUseCase = GetOrderByIdUseCase(repository)

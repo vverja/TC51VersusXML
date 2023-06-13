@@ -1,12 +1,8 @@
 package com.vereskul.tc51versusxml.domain.models
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
-import com.vereskul.tc51versusxml.database.entities.GoodsEntity
-import com.vereskul.tc51versusxml.database.entities.SupplierOrderEntity
-import com.vereskul.tc51versusxml.database.entities.SupplierOrdersWithGoodsEntity
-import com.vereskul.tc51versusxml.network.dto.GoodsDTO
-import com.vereskul.tc51versusxml.network.dto.SupplierOrderDTO
+import com.vereskul.tc51versusxml.data.network.dto.GoodsDTO
+import com.vereskul.tc51versusxml.data.network.dto.SupplierOrderDTO
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 
@@ -25,7 +21,7 @@ data class SupplierOrderModel (
     var goods : List<GoodsModel> = mutableListOf()
 ):Parcelable
 
-fun SupplierOrderModel.asDTO():SupplierOrderDTO{
+fun SupplierOrderModel.asDTO(): SupplierOrderDTO {
     return SupplierOrderDTO(
         orderRef = "",
         number = "",

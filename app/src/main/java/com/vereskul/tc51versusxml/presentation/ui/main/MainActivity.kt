@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         listAdapter = OrdersListAdapter()
         binding.ordersList.adapter = listAdapter
+
         viewModel.orders.observe(this) { list->
             listAdapter.submitList(list)
             listAdapter.onOrderClickListener = { order ->

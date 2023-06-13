@@ -6,7 +6,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#B3E5FC"
+        app:cardBackgroundColor="#FFE0B2"
         app:cardCornerRadius="10dp"
         app:cardUseCompatPadding="true">
 
@@ -52,7 +52,7 @@
                 android:id="@+id/order_type_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/baseline_arrow_circle_down_24"
+                android:src="@drawable/baseline_arrow_circle_up_24"
                 />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

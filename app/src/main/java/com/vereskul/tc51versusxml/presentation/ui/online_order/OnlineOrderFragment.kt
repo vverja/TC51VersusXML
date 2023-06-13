@@ -6,10 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
+import com.vereskul.tc51versusxml.R
 import com.vereskul.tc51versusxml.databinding.FragmentOnlineOrderBinding
+import com.vereskul.tc51versusxml.presentation.ui.login.afterTextChanged
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -27,18 +33,26 @@ class OnlineOrderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentOnlineOrderBinding.inflate(layoutInflater)
+        _binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_online_order,
+            container,
+            false
+        )
+        //_binding = FragmentOnlineOrderBinding.inflate(layoutInflater)
+        binding.viewmodel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fillViewModelData()
+
         setObservers(view)
+
         setDateTimePicker(view)
         setClickListeners()
-        binding.viewmodel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
     }
 
     private fun setTabLayout() {
@@ -51,13 +65,22 @@ class OnlineOrderFragment : Fragment() {
 
     private fun setDateTimePicker(view: View) {
         val dateTime = LocalDateTime.now()
-        binding.orderDate.setText(dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")))
         binding.orderDate.setOnClickListener {
+
             DatePickerDialog(view.context,{_, year, month, day ->
-                val dayStr = day.toString().padStart(2, '0')
-                val monthStr = month.toString().padStart(2, '0')
-                binding.orderDate.setText("$dayStr.$monthStr.$year")
-            }, dateTime.year,dateTime.monthValue, dateTime.dayOfMonth).show()
+               val localDateTime = LocalDateTime.of(
+                   year,
+                   month + 1,
+                   day,
+                   dateTime.hour,
+                   dateTime.minute,
+                   dateTime.second
+               )
+                binding.orderDate.setText(
+                    localDateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"))
+                )
+
+            }, dateTime.year,dateTime.monthValue-1, dateTime.dayOfMonth).show()
         }
     }
 
@@ -98,6 +121,74 @@ class OnlineOrderFragment : Fragment() {
         }
         viewModel.totalSum.observe(viewLifecycleOwner){
             binding.orderSum.text = it.toString()
+        }
+
+        textChangeListeners()
+
+        saveButtonObserver()
+
+        formStateObserver()
+    }
+
+    private fun formStateObserver() = lifecycleScope.launch {
+        viewModel.formState.collect{ formState ->
+            with(binding){
+                formState.stockError?.let {
+                    orderStockSelector.error = getString(it)
+                }
+                formState.supplierError?.let {
+                    orderSupplierSelector.error = getString(it)
+                }
+                formState.dateError?.let {
+                    orderDate.error = getString(it)
+                }
+                sendOrder.isEnabled = formState.isDataValid
+            }
+        }
+    }
+
+    private fun saveButtonObserver() = lifecycleScope.launch {
+            viewModel.saveResult.collect { saveResult ->
+                if (saveResult.success != null) {
+                    val snackbar = Snackbar.make(
+                        binding.mainOnlineOrderLayout,
+                        saveResult.success,
+                        Snackbar.LENGTH_SHORT
+                    ).setDuration(3000)
+
+                    snackbar.addCallback(object : Snackbar.Callback() {
+                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                            super.onDismissed(transientBottomBar, event)
+                            activity?.finish()
+                        }
+
+                        override fun onShown(sb: Snackbar?) {
+                            super.onShown(sb)
+                        }
+                    })
+                    snackbar.show()
+                } else if (saveResult.error != null) {
+                    Snackbar.make(
+                        binding.mainOnlineOrderLayout,
+                        saveResult.error,
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+
+    private fun textChangeListeners() {
+        binding.orderSupplierSelector.afterTextChanged {
+            viewModel.orderDataChanged()
+        }
+
+        binding.orderDate.afterTextChanged {
+            viewModel.orderDataChanged()
+        }
+
+        binding.orderStockSelector.afterTextChanged {
+            viewModel.orderDataChanged()
         }
     }
 

@@ -34,7 +34,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:autofillHints="name"
-                        android:text="@{viewmodel.currentOrder.supplier}"
+                        android:text="@={viewmodel.currentOrder.supplier}"
                         android:hint="@string/select_supplier"
                         android:inputType="textPersonName"
                         android:minHeight="48dp" />
@@ -45,7 +45,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:autofillHints="name"
-                        android:text="@{viewmodel.currentOrder.stock}"
+                        android:text="@={viewmodel.currentOrder.stock}"
                         android:hint="@string/select_stock"
                         android:inputType="textPersonName"
                         android:minHeight="48dp" />
@@ -57,9 +57,10 @@
                         android:layout_margin="5dp"
                         android:autofillHints="creditCardExpirationDate"
                         android:hint="@string/select_order_date"
-                        app:setLocalDateTime="@{viewmodel.currentOrder.date}"
+                        app:setLocalDateTime="@={viewmodel.currentOrder.date}"
                         android:inputType="date"
-                        android:minHeight="48dp" />
+                        android:minHeight="48dp"
+                        />
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/online_order_tablayout"

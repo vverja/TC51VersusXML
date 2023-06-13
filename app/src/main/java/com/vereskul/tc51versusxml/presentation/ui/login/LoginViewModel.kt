@@ -5,17 +5,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.vereskul.tc51versusxml.R
-import com.vereskul.tc51versusxml.network.ApiFactory
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import com.vereskul.tc51versusxml.data.network.ApiFactory
+import com.vereskul.tc51versusxml.data.repository.UserRepositoryImpl
+import com.vereskul.tc51versusxml.domain.models.LoginResult
+import com.vereskul.tc51versusxml.domain.usecases.users_case.LoginUseCase
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
-class LoginViewModel() : ViewModel() {
+class LoginViewModel(
+    private val loginUseCase: LoginUseCase
+) : ViewModel() {
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
 
@@ -23,23 +25,10 @@ class LoginViewModel() : ViewModel() {
     val loginResult: LiveData<LoginResult> = _loginResult
 
     fun login(username: String, password: String) {
-        // can be launched in a separate asynchronous job
-        //val result = loginRepository.login(username, password)
-        ApiFactory.register(username, password)
-        ApiFactory.apiService?.let { apiService ->
-            viewModelScope.launch {
-                try {
-                    val userInfo = apiService.getUserInfo().convertToModel()
-                    _loginResult.value = LoginResult( success = LoggedInUserView(
-                                    userInfo.displayName,
-                                    userInfo.stockName
-                                )
-                            )
-                        Log.d("LoginViewModel", userInfo.displayName?:"")
-                }catch (e: RuntimeException){
-                    _loginResult.value = LoginResult(error = R.string.login_failed)
-                    Log.e("LoginViewModel",e.message?:"")
-                }
+        viewModelScope.launch {
+            loginUseCase(username, password).collect{
+                Log.d("LoginViewModel", "$it")
+                _loginResult.value = it
             }
         }
     }

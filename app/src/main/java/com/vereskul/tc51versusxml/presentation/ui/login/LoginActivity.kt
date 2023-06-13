@@ -15,12 +15,18 @@ import android.widget.EditText
 import android.widget.Toast
 import com.vereskul.tc51versusxml.R
 import com.vereskul.tc51versusxml.databinding.ActivityLoginBinding
+import com.vereskul.tc51versusxml.domain.models.UsersModel
 import com.vereskul.tc51versusxml.presentation.ui.main.MainActivity
 
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var loginViewModel: LoginViewModel
+    private val loginViewModel by lazy {
+        ViewModelProvider(
+            this@LoginActivity,
+            LoginViewModelFactory(application)
+        )[LoginViewModel::class.java]
+    }
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,8 +40,8 @@ class LoginActivity : AppCompatActivity() {
         val login = binding.login
         val loading = binding.loading
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
+//        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
+//            .get(LoginViewModel::class.java)
 
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
@@ -66,7 +72,6 @@ class LoginActivity : AppCompatActivity() {
                 finish()
             }
 
-            //Complete and destroy login activity once successful
         })
 
         username.afterTextChanged {
@@ -102,10 +107,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
+    private fun updateUiWithUser(model: UsersModel) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
-        // TODO : initiate successful logged in experience
+
         Toast.makeText(
             applicationContext,
             "$welcome $displayName",
