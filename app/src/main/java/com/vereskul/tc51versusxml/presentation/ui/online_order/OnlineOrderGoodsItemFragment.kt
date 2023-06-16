@@ -71,9 +71,7 @@ class OnlineOrderGoodsItemFragment : Fragment() {
                         viewModel.getItemByName(it.getItemAtPosition(position) as String)
                     binding.currentUnits.text = itemByName?.units
                     binding.selectBarcode.setText(itemByName?.barcode)
-                    itemByName?.let { item ->
-                        viewModel.setOfSelectedItems.add(item)
-                    }
+                    binding.currentCode.text = itemByName?.code
                 }
             }
 

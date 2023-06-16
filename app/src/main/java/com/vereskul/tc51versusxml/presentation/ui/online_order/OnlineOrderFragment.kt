@@ -93,18 +93,7 @@ class OnlineOrderFragment : Fragment() {
     }
 
     private fun setObservers(view: View) {
-         viewModel.stocksList.observe(viewLifecycleOwner) {
-            ArrayAdapter(
-                view.context,
-                android.R.layout.simple_dropdown_item_1line, it?.toMutableList() ?: emptyList()
-            ).also { adapter ->
-                binding.orderStockSelector.setAdapter(adapter)
-            }
-        }
-        binding.orderStockSelector.setOnItemClickListener { parent, _, position, _ ->
-            viewModel.selectedStock = parent.adapter.getItem(position) as StockModel
 
-        }
         viewModel.suppliersList.observe(viewLifecycleOwner) {
             ArrayAdapter(
                 view.context,
@@ -142,9 +131,6 @@ class OnlineOrderFragment : Fragment() {
     private fun formStateObserver() = lifecycleScope.launch {
         viewModel.formState.collect{ formState ->
             with(binding){
-                formState.stockError?.let {
-                    orderStockSelector.error = getString(it)
-                }
                 formState.supplierError?.let {
                     orderSupplierSelector.error = getString(it)
                 }
@@ -196,9 +182,6 @@ class OnlineOrderFragment : Fragment() {
             viewModel.orderDataChanged()
         }
 
-        binding.orderStockSelector.afterTextChanged {
-            viewModel.orderDataChanged()
-        }
     }
 
     private fun setClickListeners(){

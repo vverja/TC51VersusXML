@@ -19,7 +19,9 @@ fun NetworkContainer.asDataBaseModel():List<SupplierOrdersWithGoodsEntity>{
                 endTime = it.endTime,
                 number = it.number,
                 date = it.date,
+                supplierCode = it.supplierCode,
                 supplier = it.supplier,
+                stockCode = it.stockCode,
                 stock = it.stock,
                 amount = it.amount,
                 orderState = it.orderState
@@ -27,6 +29,7 @@ fun NetworkContainer.asDataBaseModel():List<SupplierOrdersWithGoodsEntity>{
                 GoodsEntity(
                     goodsId = goodsDTO.goodsId,
                     orderId = goodsDTO.orderRef,
+                    code = goodsDTO.code,
                     name = goodsDTO.name,
                     units = goodsDTO.units,
                     qty = goodsDTO.qty,
@@ -43,7 +46,9 @@ fun NetworkContainer.asDomainModel():List<SupplierOrderModel>{
             orderId = it.orderRef,
             number = it.number,
             date = it.date,
+            supplierCode = it.supplierCode,
             supplier = it.supplier,
+            stockCode = it.stockCode,
             stock = it.stock,
             amount = it.amount,
             downloadDate = it.downloadDate,
@@ -52,6 +57,7 @@ fun NetworkContainer.asDomainModel():List<SupplierOrderModel>{
             orderState = OrderStatus.valueOf(it.orderState),
             goods = it.goods.map {goodsDto->
                 GoodsModel(
+                    code = goodsDto.code,
                     name = goodsDto.name,
                     units = goodsDto.units,
                     qty = goodsDto.qty,

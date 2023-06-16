@@ -10,7 +10,11 @@ data class SupplierOrderDTO (
     var orderRef: String,
     var number : String,
     var date : LocalDateTime,
+    @SerializedName("supplier_code")
+    var supplierCode: String,
     var supplier: String,
+    @SerializedName("stock_code")
+    var stockCode : String?= null,
     var stock : String?= null,
     var amount : Double? = null,
     @SerializedName("download_date")

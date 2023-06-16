@@ -1,6 +1,7 @@
 package com.vereskul.tc51versusxml.presentation.ui.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.vereskul.tc51versusxml.data.database.AppDb
 import com.vereskul.tc51versusxml.data.network.ApiFactory
@@ -69,8 +70,9 @@ class SupplierOrdersViewModel(application: Application):AndroidViewModel(applica
         }
     }
     private fun refreshFromRepository()=viewModelScope.launch {
-        repository.uploadOrders()
+        Log.d("SupplierOrdersViewModel", "refresh from db")
         repository.downloadOrders()
+        repository.uploadOrders()
         getAllOrders()
     }
 

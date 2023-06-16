@@ -7,7 +7,7 @@ import com.vereskul.tc51versusxml.data.network.dto.StockDTO
 import com.vereskul.tc51versusxml.data.network.dto.SupplierDTO
 import com.vereskul.tc51versusxml.data.network.dto.SupplierOrderDTO
 import com.vereskul.tc51versusxml.data.network.dto.UserDTO
-import kotlinx.coroutines.flow.Flow
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
@@ -18,7 +18,7 @@ interface ApiService {
     @POST("users")
     suspend fun getUserInfo(): UserDTO
     @POST("suppliers_orders")
-    suspend fun makeOrder(supplierOrderDTO: SupplierOrderDTO): SaveResultDTO
+    suspend fun makeOrder(@Body supplierOrderDTO: SupplierOrderDTO): SaveResultDTO
     @GET("supliers_list")
     suspend fun getSuppliers(): List<SupplierDTO>
     @GET("goods/shops")

@@ -17,7 +17,11 @@ data class SupplierOrderEntity (
     var endTime: LocalDateTime? = null,
     var number : String,
     var date : LocalDateTime,
+    @ColumnInfo("supplier_code")
+    var supplierCode: String,
     var supplier: String,
+    @ColumnInfo("stock_code")
+    var stockCode : String?= null,
     var stock : String?= null,
     var amount : Double? = null,
     @ColumnInfo("order_state")

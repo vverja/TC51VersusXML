@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="viewmodel"
@@ -8,8 +10,7 @@
             name="currentGoodsModel"
             type="com.vereskul.tc51versusxml.domain.models.GoodsModel" />
     </data>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.online_order.OnlineOrderGoodsItemFragment">
@@ -19,7 +20,10 @@
             android:layout_height="match_parent"
             android:background="#EDE7F6"
             android:orientation="vertical">
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <AutoCompleteTextView
                 android:id="@+id/select_item"
                 android:layout_width="match_parent"
@@ -27,9 +31,29 @@
                 android:layout_margin="5dp"
                 android:autofillHints="name"
                 android:hint="@string/select_item"
+                android:layout_weight="1"
                 android:inputType="textPersonName"
                 android:text="@={currentGoodsModel.name}"
                 android:padding="5dp" />
+            <TextView
+                android:id="@+id/current_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="3"
+                android:text="@={currentGoodsModel.code}"
+                android:padding="5dp"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/current_units"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="3"
+                android:text="@{currentGoodsModel.units}"
+                android:padding="5dp" />
+        </LinearLayout>
+
 
             <EditText
                 android:id="@+id/select_qty"
@@ -67,13 +91,8 @@
                 android:inputType="number"
                 android:padding="5dp" />
 
-            <TextView
-                android:id="@+id/current_units"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@{currentGoodsModel.units}"
-                android:padding="5dp" />
+
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </FrameLayout>
 </layout>

@@ -88,7 +88,7 @@
             android:layout_gravity="bottom"
             app:fabCradleMargin="0dp"
             app:fabCradleRoundedCornerRadius="0dp"
-            app:menu="@menu/menu_appbar_main_activity" />
+            app:menu="@menu/filter_menu" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

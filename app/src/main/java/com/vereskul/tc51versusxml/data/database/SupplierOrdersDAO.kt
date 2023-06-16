@@ -37,9 +37,9 @@ interface SupplierOrdersDAO {
 
     @Transaction
     @Query(
-        "Select * from supplier_orders " +
+        "Select supplier_orders.* from supplier_orders " +
                 "join upload_list " +
-                    " on supplier_orders.order_id = upload_list.upload_id"
+                    " on supplier_orders.order_id = upload_list.order_id"
     )
     fun getOrdersUploadListByInnerJoin(): Flow<List<SupplierOrdersWithGoodsEntity>>
 

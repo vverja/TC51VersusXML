@@ -3,6 +3,8 @@ package com.vereskul.tc51versusxml.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.vereskul.tc51versusxml.data.database.AppDb
 import com.vereskul.tc51versusxml.data.database.entities.GoodsEntity
 import com.vereskul.tc51versusxml.data.database.entities.UploadListEntity
@@ -16,7 +18,9 @@ import com.vereskul.tc51versusxml.domain.models.OrderStatus
 import com.vereskul.tc51versusxml.domain.models.SupplierOrderModel
 import com.vereskul.tc51versusxml.domain.models.asDatabaseEntity
 import kotlinx.coroutines.flow.MutableStateFlow
+import retrofit2.HttpException
 import java.time.LocalDateTime
+import kotlin.math.log
 
 class OrdersRepositoryImpl(
     db: AppDb,
@@ -65,21 +69,28 @@ class OrdersRepositoryImpl(
 
     override suspend fun downloadOrders() {
         try {
+            Log.d("downloadOrders", "download begins")
             val networkContainer = apiService.getSupplierOrders()
             val supplierOrdersList =
                 networkContainer.asDataBaseModel().filter {
                     it.supplierOrder.orderState == OrderStatus.NEW.toString()
                 }.toList()
+            Log.d("downloadOrders", "$networkContainer")
             val innerOrdersNetworkContainer = apiService.getInnerOrders()
+            Log.d("downloadOrders", "$innerOrdersNetworkContainer")
             val innerOrders = innerOrdersNetworkContainer.asDataBaseModel().filter {
                 it.supplierOrder.orderState == OrderStatus.NEW.toString()
             }.toList()
+            Log.d("downloadOrders", "get orders $supplierOrdersList")
+            Log.d("downloadOrders", "get inner orders $innerOrders")
             val supplierOrderEntityList = supplierOrdersList.map { it.supplierOrder }.toList()
             val innerOrderEntityList = innerOrders.map {
                 it.supplierOrder
             }.toList()
-            Log.d("Downloading...", supplierOrderEntityList.toString())
-            Log.d("Downloading...", innerOrderEntityList.toString())
+            Log.d("downloadOrders", supplierOrderEntityList.toString())
+            Log.d("downloadOrders", innerOrderEntityList.toString())
+            supplierOrderEntityList.forEach { it.downloadDate = LocalDateTime.now() }
+            innerOrderEntityList.forEach { it.downloadDate = LocalDateTime.now() }
             supplierOrdersDAO.insertAllOrders(supplierOrderEntityList)
             supplierOrdersDAO.insertAllOrders(innerOrderEntityList)
             val goodsList = mutableListOf<GoodsEntity>()
@@ -88,33 +99,46 @@ class OrdersRepositoryImpl(
             goodsDAO.insertAll(goodsList.toList())
             dataIsChangedForWorker.value = true
         } catch (e: Exception) {
-            Log.e("OrdersRepositoryImpl", e.message.toString())
+            Log.e("downloadOrders", e.message.toString())
         }
     }
 
     override suspend fun uploadOrders() {
         supplierOrdersDAO.getOrdersUploadListByInnerJoin().collect { orders ->
-            Log.d("uploadOrders", orders.toString())
-            val saveResultAndOrderList = orders.asDTO().map {
-                apiService.makeOrder(it) to it.orderRef
-            }
-            saveResultAndOrderList.forEach {
-                if (!it.first.error) {
-                    orders.firstOrNull { ordersEntity ->
-                        ordersEntity.supplierOrder.orderId == it.second
-                    }?.apply {
-                        supplierOrdersDAO.deleteOrder(this.supplierOrder)
-                        goodsDAO.deleteAll(this.goods)
-                        this.changeRefId(it.first.message)
-                        supplierOrdersDAO.insertOrder(this.supplierOrder)
-                        goodsDAO.insertAll(this.goods)
-                        supplierOrdersDAO.deleteUploadList()
+            Log.d("uploadOrders", "Upload begins")
+            try {
+                val saveResultAndOrderList = orders.asDTO()
+                saveResultAndOrderList.forEach {
+                        it.goods.forEach{goods ->
+                            goods.name = goods.name?.replace(',', ' ')
+                        }
                     }
-                }else{
-                    Log.e("uploadOrders", it.first.message)
+                saveResultAndOrderList.map {
+                    Log.d("uploadOrders", "$it")
+                    apiService.makeOrder(it) to it.orderRef
+                }.forEach {
+                    if (!it.first.error) {
+                        orders.firstOrNull { ordersEntity ->
+                            ordersEntity.supplierOrder.orderId == it.second
+                        }?.apply {
+                            supplierOrdersDAO.deleteOrder(this.supplierOrder)
+                            Log.d("uploadOrders", " order ${this.supplierOrder} deleted")
+                            goodsDAO.deleteAll(this.goods)
+                            this.changeRefId(it.first.message)
+                            supplierOrdersDAO.insertOrder(this.supplierOrder)
+                            Log.d("uploadOrders", " order ${this.supplierOrder} inserted")
+                            goodsDAO.insertAll(this.goods)
+                            supplierOrdersDAO.deleteUploadList()
+                            Log.d("uploadOrders", "upload list cleared")
+                        }
+                    } else {
+                        Log.e("uploadOrders", it.first.message)
+                    }
                 }
+                dataIsChangedForWorker.value = true
+            } catch (e: Exception) {
+                Log.e("uploadOrders", e.message.toString())
             }
-            dataIsChangedForWorker.value = true
         }
     }
 

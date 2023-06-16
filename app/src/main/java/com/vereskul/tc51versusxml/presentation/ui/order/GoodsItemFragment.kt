@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.oned.EAN13Writer
-import com.vereskul.tc51versusxml.R
 import com.vereskul.tc51versusxml.databinding.FragmentGoodsItemBinding
 import com.vereskul.tc51versusxml.domain.models.GoodsModel
 
@@ -42,16 +41,24 @@ class GoodsItemFragment : Fragment() {
         binding.itemQtyPlan.text = goodsModel?.qty.toString()
         binding.itemQtyFact.text = goodsModel?.qty.toString()
         binding.itemBarcode.text = goodsModel?.barcode
+        goodsModel?.barcode?.let {barcode ->
+            if(barcode.isNotEmpty()) {
+                createBarcodeImage()
+            }
+        }
+        return binding.root
+    }
 
+    private fun createBarcodeImage() {
         val eaN13Writer = EAN13Writer()
         val bitMatrix = eaN13Writer.encode(goodsModel?.barcode, BarcodeFormat.EAN_13, 400, 200)
         val height = bitMatrix.height
         val width = bitMatrix.width
-        val pixels = IntArray(height*width)
-        for(y in 0 until height){
+        val pixels = IntArray(height * width)
+        for (y in 0 until height) {
             val offset = y * width
-            for(x in 0 until width)
-                pixels[offset + x] = if(bitMatrix[x, y])
+            for (x in 0 until width)
+                pixels[offset + x] = if (bitMatrix[x, y])
                     argb(255, 0, 0, 0)
                 else
                     argb(255, 255, 255, 255)
@@ -59,7 +66,6 @@ class GoodsItemFragment : Fragment() {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height)
         binding.barcodeBitmap.setImageBitmap(bitmap)
-        return binding.root
     }
 
     override fun onDestroyView() {

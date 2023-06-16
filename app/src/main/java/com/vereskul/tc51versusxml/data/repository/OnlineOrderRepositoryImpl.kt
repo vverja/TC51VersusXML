@@ -43,6 +43,7 @@ class OnlineOrderRepositoryImpl(
 
     override suspend fun saveOrder(supplierOrderModel: SupplierOrderModel): SaveResult {
         try {
+            Log.d("SAVE_ORDER", "Save order begins")
             val tempRefId = UUID.randomUUID()
             supplierOrderModel.orderId = "$tempRefId"
             supplierOrderModel.orderState = OrderStatus.IN_STOCK
@@ -52,12 +53,14 @@ class OnlineOrderRepositoryImpl(
             val supplierOrdersWithGoodsEntity = supplierOrderModel.asDatabaseEntity()
             supplierOrdersDAO.insertOrder(supplierOrdersWithGoodsEntity.supplierOrder)
             goodsDAO.insertAll(supplierOrdersWithGoodsEntity.goods)
-            supplierOrdersDAO.registerForUpload(UploadListEntity(
-                orderId = supplierOrdersWithGoodsEntity.supplierOrder.orderId)
+            val uploadEntity = UploadListEntity(
+                orderId = supplierOrdersWithGoodsEntity.supplierOrder.orderId
             )
+            Log.d("SAVE_ORDER", "$uploadEntity")
+            supplierOrdersDAO.registerForUpload(uploadEntity)
             return SaveResult(success = R.string.susccess_saving_order)
         }catch (e: Exception){
-            Log.e("Online order saving", e.message.toString())
+            Log.e("SAVE_ORDER", e.message.toString())
             return SaveResult(error = R.string.save_order_error)
         }
     }

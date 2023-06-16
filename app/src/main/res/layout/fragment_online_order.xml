@@ -28,6 +28,16 @@
                     android:orientation="vertical"
                     android:padding="5dp">
 
+                    <TextView
+                        android:id="@+id/order_stock_selector"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20sp"
+                        android:padding="5dp"
+                        android:layout_margin="5dp"
+                        android:minHeight="48dp"
+                        tools:text = "Склад"
+                        android:text="@{viewmodel.currentOrder.stock}" />
                     <AutoCompleteTextView
                         android:id="@+id/order_supplier_selector"
                         android:layout_width="match_parent"
@@ -39,16 +49,6 @@
                         android:inputType="textPersonName"
                         android:minHeight="48dp" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/order_stock_selector"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:autofillHints="name"
-                        android:text="@={viewmodel.currentOrder.stock}"
-                        android:hint="@string/select_stock"
-                        android:inputType="textPersonName"
-                        android:minHeight="48dp" />
 
                     <EditText
                         android:id="@+id/order_date"

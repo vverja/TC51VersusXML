@@ -65,6 +65,7 @@ class OnlineOrderViewModel(application: Application):AndroidViewModel(applicatio
             _currentOrder.value = SupplierOrderModel(
                     orderId = "",
                     date = LocalDateTime.now(),
+                    stockCode = selectedStock?.code,
                     stock = selectedStock?.name
             )
         }
@@ -222,8 +223,8 @@ class OnlineOrderViewModel(application: Application):AndroidViewModel(applicatio
         viewModelScope.launch {
             val order = _currentOrder.value
             order?.apply {
-                supplier = selectedSupplier?.code
-                stock = selectedStock?.code
+                supplierCode = selectedSupplier?.code
+                stockCode = selectedStock?.code
                 goods = _currentGoodsList.value?: listOf()
                 if (_formState.value.isDataValid){
                    _saveResult.value = saveOrderUseCase(this)
