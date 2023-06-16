@@ -2,7 +2,6 @@ package com.vereskul.tc51versusxml.data.database.entities
 
 
 import androidx.room.*
-import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "supplier_order_goods",
     foreignKeys = [ForeignKey(
@@ -19,6 +18,8 @@ data class GoodsEntity (
     var goodsId: String,
     @ColumnInfo("order_id")
     var orderId: String? = null,
+    @ColumnInfo("code")
+    var code: String? = null,
     @ColumnInfo("name")
     var name  : String? = null,
     @ColumnInfo("units")

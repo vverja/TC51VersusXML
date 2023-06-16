@@ -16,6 +16,8 @@ object ApiFactory {
     //Основной УРЛ сайта
     const val BASE_URL = "http://biz-portal.pp.ua:59843/test/hs/"
 
+    var isLoggedIn = false
+
     var apiService: ApiService = Retrofit.Builder()
         //для конвертации Гсоном
         .addConverterFactory(GsonConverterFactory.create(gson))
@@ -52,5 +54,6 @@ object ApiFactory {
             .client(client)
             .build()
             .create(ApiService::class.java)
+        isLoggedIn = true
     }
 }

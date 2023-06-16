@@ -8,6 +8,8 @@ data class GoodsDTO (
     var orderRef: String,
     @SerializedName("goods_id")
     var goodsId: String,
+    @SerializedName("code")
+    var code: String,
     @SerializedName("name")
     var name  : String? = null,
     @SerializedName("units")

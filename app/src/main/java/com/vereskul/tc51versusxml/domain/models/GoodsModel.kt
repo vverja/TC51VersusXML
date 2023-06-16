@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GoodsModel (
+    var code: String? = null,
     var name  : String? = null,
     var units : String? = null,
     var qty   : Double? = null,

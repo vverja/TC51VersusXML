@@ -41,7 +41,7 @@ interface SupplierOrdersDAO {
                 "join upload_list " +
                     " on supplier_orders.order_id = upload_list.upload_id"
     )
-    fun getOrdersUploadListByInnerJoin(): Flow<SupplierOrdersWithGoodsEntity>
+    fun getOrdersUploadListByInnerJoin(): Flow<List<SupplierOrdersWithGoodsEntity>>
 
     @Transaction
     @Query("Delete from upload_list")

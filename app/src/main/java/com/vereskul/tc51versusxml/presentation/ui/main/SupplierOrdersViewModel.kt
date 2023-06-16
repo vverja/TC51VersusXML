@@ -2,12 +2,11 @@ package com.vereskul.tc51versusxml.presentation.ui.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.vereskul.tc51versusxml.data.repository.OrdersRepositoryImpl
-
 import com.vereskul.tc51versusxml.data.database.AppDb
+import com.vereskul.tc51versusxml.data.network.ApiFactory
+import com.vereskul.tc51versusxml.data.repository.OrdersRepositoryImpl
 import com.vereskul.tc51versusxml.domain.models.SupplierOrderModel
 import com.vereskul.tc51versusxml.domain.usecases.orders_case.*
-import com.vereskul.tc51versusxml.data.network.ApiFactory
 import kotlinx.coroutines.launch
 
 class SupplierOrdersViewModel(application: Application):AndroidViewModel(application) {
@@ -24,6 +23,19 @@ class SupplierOrdersViewModel(application: Application):AndroidViewModel(applica
 
     init {
         refreshFromRepository()
+        dataChangesObserver()
+    }
+
+    private fun dataChangesObserver() {
+        viewModelScope.launch {
+            val changesObserver = repository.getDataChangesObserver()
+            changesObserver.collect { dataChanged ->
+                if (dataChanged) {
+                    getAllOrders()
+                    changesObserver.value = false
+                }
+            }
+        }
     }
 
     private var _orders = MutableLiveData<List<SupplierOrderModel>>()
@@ -57,7 +69,8 @@ class SupplierOrdersViewModel(application: Application):AndroidViewModel(applica
         }
     }
     private fun refreshFromRepository()=viewModelScope.launch {
-        repository.refreshOrdersInDb()
+        repository.uploadOrders()
+        repository.downloadOrders()
         getAllOrders()
     }
 

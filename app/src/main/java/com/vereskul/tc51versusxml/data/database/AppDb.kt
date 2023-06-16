@@ -7,13 +7,15 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.vereskul.tc51versusxml.data.database.entities.GoodsEntity
 import com.vereskul.tc51versusxml.data.database.entities.SupplierOrderEntity
+import com.vereskul.tc51versusxml.data.database.entities.UploadListEntity
 import com.vereskul.tc51versusxml.data.database.entities.UsersEntity
 
 @Database(
     entities = [
         UsersEntity::class,
         SupplierOrderEntity::class,
-        GoodsEntity::class],
+        GoodsEntity::class,
+        UploadListEntity::class],
     version = 1, exportSchema = false
 )
 @TypeConverters(Converters::class)

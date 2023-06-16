@@ -8,13 +8,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.vereskul.tc51versusxml.R
 import com.vereskul.tc51versusxml.data.database.AppDb
-import com.vereskul.tc51versusxml.domain.models.*
+import com.vereskul.tc51versusxml.data.network.ApiFactory
+import com.vereskul.tc51versusxml.data.repository.OnlineOrderRepositoryImpl
+import com.vereskul.tc51versusxml.domain.models.GoodsModel
+import com.vereskul.tc51versusxml.domain.models.ItemModel
+import com.vereskul.tc51versusxml.domain.models.SaveResult
+import com.vereskul.tc51versusxml.domain.models.StockModel
+import com.vereskul.tc51versusxml.domain.models.SupplierModel
+import com.vereskul.tc51versusxml.domain.models.SupplierOrderModel
+import com.vereskul.tc51versusxml.domain.usecases.online_order_usecase.GetCurrentUserUseCase
 import com.vereskul.tc51versusxml.domain.usecases.online_order_usecase.GetItemsUseCase
 import com.vereskul.tc51versusxml.domain.usecases.online_order_usecase.GetStocksUseCase
 import com.vereskul.tc51versusxml.domain.usecases.online_order_usecase.GetSuppliersUseCase
 import com.vereskul.tc51versusxml.domain.usecases.online_order_usecase.SaveOrderUseCase
-import com.vereskul.tc51versusxml.data.network.ApiFactory
-import com.vereskul.tc51versusxml.data.repository.OnlineOrderRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -25,13 +31,14 @@ import java.time.LocalDateTime
 class OnlineOrderViewModel(application: Application):AndroidViewModel(application) {
     private val repository = OnlineOrderRepositoryImpl.getInstance(
         AppDb.getInstance(application),
-        ApiFactory.apiService!!
+        ApiFactory.apiService
     )
 
     private val getItemsUseCase = GetItemsUseCase(repository)
     private val getStocksUseCase = GetStocksUseCase(repository)
     private val getSuppliersUseCase = GetSuppliersUseCase(repository)
     private val saveOrderUseCase = SaveOrderUseCase(repository)
+    private val currentUserUseCase = GetCurrentUserUseCase(repository)
 
     private var _suppliersList = MutableLiveData<List<SupplierModel>?>()
     val suppliersList: LiveData<List<SupplierModel>?>
@@ -45,9 +52,24 @@ class OnlineOrderViewModel(application: Application):AndroidViewModel(applicatio
     val itemsList: LiveData<List<ItemModel>?>
         get() = _itemsList
 
-    private var _currentOrder = MutableLiveData<SupplierOrderModel>(
-        SupplierOrderModel(orderId = "", date = LocalDateTime.now(), )
-    )
+    private var _currentOrder = MutableLiveData(
+        SupplierOrderModel(orderId = "", date = LocalDateTime.now()))
+
+    init {
+        setDefaultOrder()
+    }
+    private fun setDefaultOrder() {
+        viewModelScope.launch {
+            val currentUser = currentUserUseCase()
+            selectedStock = StockModel(currentUser.stockCode ?: "", currentUser.stockName ?: "")
+            _currentOrder.value = SupplierOrderModel(
+                    orderId = "",
+                    date = LocalDateTime.now(),
+                    stock = selectedStock?.name
+            )
+        }
+    }
+
     val currentOrder: LiveData<SupplierOrderModel>
         get() = _currentOrder
 
@@ -65,6 +87,10 @@ class OnlineOrderViewModel(application: Application):AndroidViewModel(applicatio
 
     private val _saveResult = MutableStateFlow(SaveResult())
     val saveResult = _saveResult.asStateFlow()
+
+    var selectedSupplier: SupplierModel? = null
+    var selectedStock: StockModel? = null
+    val setOfSelectedItems = mutableSetOf<ItemModel>()
 
     fun getItems(){
         viewModelScope.launch {
@@ -123,26 +149,33 @@ class OnlineOrderViewModel(application: Application):AndroidViewModel(applicatio
     fun orderDataChanged()
     {
         val order = currentOrder.value
-        if(!isSupplierValid(order?.supplier)){
-            _formState.value  = OnlineOrderFormState(
-                supplierError = R.string.supplier_name_error
-            )
-        }else if (!isValidStock(order?.stock)){
-            _formState.value = OnlineOrderFormState(
-                stockError = R.string.stock_name_error
-            )
-        }else if (!isValidDate(order?.date)){
-            _formState.value =  OnlineOrderFormState(
-                dateError = R.string.date_must_be_today
-            )
-        }else if (!isGoodsListValid(order?.goods)){
-             OnlineOrderFormState(
-                goodsListError = getErrorFromList(order?.goods)
-            )
-        }else {
-            _formState.value = OnlineOrderFormState(
-                isDataValid = true
-            )
+        val goodsList = currentGoodsList.value
+        when {
+            !isSupplierValid(order?.supplier) -> {
+                _formState.value  = OnlineOrderFormState(
+                    supplierError = R.string.supplier_name_error
+                )
+            }
+            !isValidStock(order?.stock) -> {
+                _formState.value = OnlineOrderFormState(
+                    stockError = R.string.stock_name_error
+                )
+            }
+            !isValidDate(order?.date) -> {
+                _formState.value =  OnlineOrderFormState(
+                    dateError = R.string.date_must_be_today
+                )
+            }
+            !isGoodsListValid(goodsList) -> {
+                OnlineOrderFormState(
+                    goodsListError = getErrorFromList(order?.goods)
+                )
+            }
+            else -> {
+                _formState.value = OnlineOrderFormState(
+                    isDataValid = true
+                )
+            }
         }
 
             
@@ -185,6 +218,19 @@ class OnlineOrderViewModel(application: Application):AndroidViewModel(applicatio
         return stock?.isNotEmpty()?:false && stock?.isNotBlank()?:false
     }
 
+    fun saveOrder(){
+        viewModelScope.launch {
+            val order = _currentOrder.value
+            order?.apply {
+                supplier = selectedSupplier?.code
+                stock = selectedStock?.code
+                goods = _currentGoodsList.value?: listOf()
+                if (_formState.value.isDataValid){
+                   _saveResult.value = saveOrderUseCase(this)
+                }
+            }
+        }
+    }
 
     companion object{
         const val TAG = "OnlineOrderViewModel"

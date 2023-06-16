@@ -2,19 +2,18 @@ package com.vereskul.tc51versusxml.presentation.ui.online_order
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.vereskul.tc51versusxml.databinding.FragmentOnlineOrderGoodsItemBinding
 import com.vereskul.tc51versusxml.domain.models.GoodsModel
-import kotlinx.coroutines.flow.collect
+import com.vereskul.tc51versusxml.presentation.ui.login.afterTextChanged
 import kotlinx.coroutines.launch
 
 
@@ -43,6 +42,9 @@ class OnlineOrderGoodsItemFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentOnlineOrderGoodsItemBinding.inflate(layoutInflater)
+        binding.viewmodel = viewModel
+        binding.currentGoodsModel = goodsModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
     }
@@ -58,7 +60,7 @@ class OnlineOrderGoodsItemFragment : Fragment() {
             ).also {adapter ->
                 binding.selectItem.setAdapter(adapter)
             }
-
+            textChangeListeners()
             formStateObserver()
         }
 
@@ -69,7 +71,9 @@ class OnlineOrderGoodsItemFragment : Fragment() {
                         viewModel.getItemByName(it.getItemAtPosition(position) as String)
                     binding.currentUnits.text = itemByName?.units
                     binding.selectBarcode.setText(itemByName?.barcode)
-
+                    itemByName?.let { item ->
+                        viewModel.setOfSelectedItems.add(item)
+                    }
                 }
             }
 
@@ -80,6 +84,20 @@ class OnlineOrderGoodsItemFragment : Fragment() {
             formState.goodsListError?.let {
                 Snackbar.make(binding.root, getString(it), Snackbar.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun textChangeListeners() {
+        binding.selectItem.afterTextChanged {
+            viewModel.orderDataChanged()
+        }
+
+        binding.selectPrice.afterTextChanged {
+            viewModel.orderDataChanged()
+        }
+
+        binding.selectQty.afterTextChanged {
+            viewModel.orderDataChanged()
         }
     }
 

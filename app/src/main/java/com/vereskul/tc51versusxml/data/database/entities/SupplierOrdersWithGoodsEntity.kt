@@ -1,14 +1,14 @@
 package com.vereskul.tc51versusxml.data.database.entities
 
-import android.util.Log
 import androidx.room.Embedded
-import androidx.room.Entity
 import androidx.room.Relation
+import com.vereskul.tc51versusxml.data.network.dto.GoodsDTO
+import com.vereskul.tc51versusxml.data.network.dto.SupplierOrderDTO
 import com.vereskul.tc51versusxml.domain.models.GoodsModel
 import com.vereskul.tc51versusxml.domain.models.OrderStatus
 import com.vereskul.tc51versusxml.domain.models.SupplierOrderModel
 
-//@Entity(tableName = "supplier_orders_with_goods")
+
 data class SupplierOrdersWithGoodsEntity(
     @Embedded
     var supplierOrder: SupplierOrderEntity,
@@ -34,11 +34,40 @@ fun List<SupplierOrdersWithGoodsEntity>.asDomainModel():List<SupplierOrderModel>
             orderState = OrderStatus.valueOf(it.supplierOrder.orderState),
             goods = it.goods.map {goodsEntity ->
                 GoodsModel(
+                    code = goodsEntity.code,
                     name = goodsEntity.name,
                     units = goodsEntity.units,
                     qty = goodsEntity.qty,
                     price = goodsEntity.price,
                     barcode = goodsEntity.barcode
+                )
+            }
+        )
+    }
+}
+fun List<SupplierOrdersWithGoodsEntity>.asDTO():List<SupplierOrderDTO>{
+    return map {
+        SupplierOrderDTO(
+            orderRef = it.supplierOrder.orderId,
+            number = it.supplierOrder.number,
+            date = it.supplierOrder.date,
+            supplier = it.supplierOrder.supplier,
+            stock = it.supplierOrder.stock,
+            amount = it.supplierOrder.amount,
+            downloadDate = it.supplierOrder.downloadDate,
+            startTime = it.supplierOrder.startTime,
+            endTime = it.supplierOrder.endTime,
+            orderState = it.supplierOrder.orderState,
+            goods = it.goods.map {goods->
+                GoodsDTO(
+                    orderRef = goods.orderId?:"",
+                    goodsId = goods.goodsId,
+                    code = goods.code?:"",
+                    name = goods.name,
+                    units = goods.units,
+                    qty = goods.qty,
+                    price = goods.price,
+                    barcode = goods.barcode
                 )
             }
         )
@@ -66,4 +95,12 @@ fun SupplierOrdersWithGoodsEntity.asDomainModel():SupplierOrderModel{
                 )
             }
         )
+}
+fun SupplierOrdersWithGoodsEntity.changeRefId(newRefId: String){
+    var counter = 1
+    this.supplierOrder.orderId = newRefId
+    this.goods.forEach {
+        it.orderId = newRefId
+        it.goodsId = "$newRefId-${counter++}"
+    }
 }

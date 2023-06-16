@@ -13,4 +13,7 @@ interface GoodsDAO {
     suspend fun insert(goods: GoodsEntity)
     @Delete
     suspend fun delete(goods: GoodsEntity)
+
+    @Delete
+    fun deleteAll(goodsList: List<GoodsEntity>)
 }

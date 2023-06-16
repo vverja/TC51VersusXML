@@ -14,6 +14,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.vereskul.tc51versusxml.R
 import com.vereskul.tc51versusxml.databinding.FragmentOnlineOrderBinding
+import com.vereskul.tc51versusxml.domain.models.StockModel
+import com.vereskul.tc51versusxml.domain.models.SupplierModel
 import com.vereskul.tc51versusxml.presentation.ui.login.afterTextChanged
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -99,6 +101,10 @@ class OnlineOrderFragment : Fragment() {
                 binding.orderStockSelector.setAdapter(adapter)
             }
         }
+        binding.orderStockSelector.setOnItemClickListener { parent, _, position, _ ->
+            viewModel.selectedStock = parent.adapter.getItem(position) as StockModel
+
+        }
         viewModel.suppliersList.observe(viewLifecycleOwner) {
             ArrayAdapter(
                 view.context,
@@ -107,6 +113,9 @@ class OnlineOrderFragment : Fragment() {
                 binding.orderSupplierSelector.setAdapter(adapter)
             }
 
+        }
+        binding.orderSupplierSelector.setOnItemClickListener { parent, _, position, _ ->
+            viewModel.selectedSupplier = parent.adapter.getItem(position) as SupplierModel
         }
         viewModel.currentGoodsList.observe(viewLifecycleOwner) {
             binding.onlineGoodsPager.adapter = OnlineOrderGoodsItemFragmentState(
@@ -197,11 +206,13 @@ class OnlineOrderFragment : Fragment() {
             viewModel.addEmptyGoodsItem()
             binding.onlineGoodsPager.currentItem = binding.onlineOrderTablayout.tabCount - 1
         }
+        binding.sendOrder.setOnClickListener {
+            viewModel.saveOrder()
+        }
     }
 
     companion object {
         const val TAG = "OnlineOrderFragment"
-        @JvmStatic
         fun newInstance() =OnlineOrderFragment()
     }
 }
