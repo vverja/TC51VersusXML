@@ -62,9 +62,16 @@ class OrdersRepositoryImpl(
         supplierOrdersDAO.insertOrder(
             supplierOrdersWithGoods.asDatabaseEntity().supplierOrder
         )
-        supplierOrdersDAO.registerForUpload(
-            UploadListEntity(orderId = supplierOrdersWithGoods.orderId)
-        )
+        supplierOrdersDAO.getOrdersUploadList(
+            listOf(supplierOrdersWithGoods.orderId)
+        ).collect{
+            if (it.isEmpty()){
+                supplierOrdersDAO.registerForUpload(
+                    UploadListEntity(orderId = supplierOrdersWithGoods.orderId)
+                )
+            }
+        }
+        dataIsChangedForWorker.value = true
     }
 
     override suspend fun downloadOrders() {
@@ -121,10 +128,16 @@ class OrdersRepositoryImpl(
                         orders.firstOrNull { ordersEntity ->
                             ordersEntity.supplierOrder.orderId == it.second
                         }?.apply {
+                            val refAndNumber = it.first.message.split(";")
+                            Log.d("uploadOrders", it.first.toString())
+                            if (refAndNumber.isEmpty()){
+                                throw RuntimeException("Нет данных о ссылке и номере заказа")
+                            }
                             supplierOrdersDAO.deleteOrder(this.supplierOrder)
                             Log.d("uploadOrders", " order ${this.supplierOrder} deleted")
                             goodsDAO.deleteAll(this.goods)
-                            this.changeRefId(it.first.message)
+
+                            this.changeRefId(refAndNumber[0], refAndNumber[1])
                             supplierOrdersDAO.insertOrder(this.supplierOrder)
                             Log.d("uploadOrders", " order ${this.supplierOrder} inserted")
                             goodsDAO.insertAll(this.goods)

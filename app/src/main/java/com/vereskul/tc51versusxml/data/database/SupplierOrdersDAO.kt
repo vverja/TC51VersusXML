@@ -32,8 +32,8 @@ interface SupplierOrdersDAO {
     suspend fun registerForUpload(uploadListEntity: UploadListEntity)
 
     @Transaction
-    @Query("Select * from supplier_orders where order_id in (:orderIdList)")
-    fun getOrdersUploadList(orderIdList: List<String>): Flow<SupplierOrdersWithGoodsEntity>
+    @Query("Select * from upload_list where order_id in (:orderIdList)")
+    fun getOrdersUploadList(orderIdList: List<String>): Flow<List<UploadListEntity>>
 
     @Transaction
     @Query(

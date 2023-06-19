@@ -26,7 +26,7 @@ class BeersetOrdersApp:Application() {
         ).build()
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             OrdersSynchronizationWorker::class.java.name,
-            ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+            ExistingPeriodicWorkPolicy.KEEP,
             periodicWorkRequest
         )
     }

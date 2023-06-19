@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
         binding.makeOnlineOrderButton.setOnClickListener {
             val intent = OnlineOrderActivity.newInstance(this)
             startActivity(intent)
+            viewModel.getAllOrders()
         }
     }
 

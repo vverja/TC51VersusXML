@@ -70,6 +70,7 @@ class OnlineOrderGoodsItemFragment : Fragment() {
                     val itemByName =
                         viewModel.getItemByName(it.getItemAtPosition(position) as String)
                     binding.currentUnits.text = itemByName?.units
+                    goodsModel?.units = itemByName?.units
                     binding.selectBarcode.setText(itemByName?.barcode)
                     binding.currentCode.text = itemByName?.code
                 }
@@ -92,10 +93,12 @@ class OnlineOrderGoodsItemFragment : Fragment() {
 
         binding.selectPrice.afterTextChanged {
             viewModel.orderDataChanged()
+            viewModel.countTotalSum()
         }
 
         binding.selectQty.afterTextChanged {
             viewModel.orderDataChanged()
+            viewModel.countTotalSum()
         }
     }
 

@@ -31,14 +31,10 @@ eapp/src/main/java/com/vereskul/tc51versusxml/domain/usecases/online_order_useca
 aapp/src/main/java/com/vereskul/tc51versusxml/presentation/ui/online_order/OnlineOrderFormState.kt,3/0/30b0545f0be70d1ddeab670daa067893be8ab71d
 ã
 [app/src/main/java/com/vereskul/tc51versusxml/presentation/ui/login/LoginViewModelFactory.kt,c/1/c14012526a85356d234eca1322d7ce6edd2e0354
-Ü
-Vapp/src/main/java/com/vereskul/tc51versusxml/presentation/ui/main/OrdersListAdapter.kt,b/f/bf39ad4ad3cf4d73835a4bae4b577a17872733ce
 x
 Happ/src/main/java/com/vereskul/tc51versusxml/domain/models/UsersModel.kt,a/8/a874f531a77ba984a9e89bb56b54fd1414ea4967
 x
 Happ/src/main/java/com/vereskul/tc51versusxml/data/database/Converters.kt,a/1/a1f88037e983ec6b8fa2aaad33cb0e4188b2c06c
-Ç
-Rapp/src/main/java/com/vereskul/tc51versusxml/data/database/entities/UsersEntity.kt,f/6/f6f36c722e0a4f4b79c620c758d2ab31ad9995a3
 á
 Wapp/src/main/java/com/vereskul/tc51versusxml/domain/usecases/users_case/LoginUseCase.kt,0/6/06c4023d8cc542695fc325b2ba3877033db603cd
 y
@@ -67,5 +63,3 @@ Rapp/src/main/java/com/vereskul/tc51versusxml/data/repository/UserRepositoryImpl
 Sapp/src/main/java/com/vereskul/tc51versusxml/presentation/ui/login/LoginActivity.kt,8/2/827ccd495983f911466b2dca2c204a6ab124edc5
 Ñ
 Tapp/src/main/java/com/vereskul/tc51versusxml/presentation/ui/login/LoginViewModel.kt,6/7/67f6130700ffdd8a2a13bdd6f66f483aafaccab0
-Å
-Qapp/src/main/java/com/vereskul/tc51versusxml/presentation/ui/main/MainActivity.kt,1/6/1640047c1638b1af8cca07757ad365889845a818

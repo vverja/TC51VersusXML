@@ -102,9 +102,10 @@ fun SupplierOrdersWithGoodsEntity.asDomainModel():SupplierOrderModel{
             }
         )
 }
-fun SupplierOrdersWithGoodsEntity.changeRefId(newRefId: String){
+fun SupplierOrdersWithGoodsEntity.changeRefId(newRefId: String, number: String){
     var counter = 1
     this.supplierOrder.orderId = newRefId
+    this.supplierOrder.number = number
     this.goods.forEach {
         it.orderId = newRefId
         it.goodsId = "$newRefId-${counter++}"

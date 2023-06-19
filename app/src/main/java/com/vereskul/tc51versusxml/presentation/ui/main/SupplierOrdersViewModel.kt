@@ -8,6 +8,7 @@ import com.vereskul.tc51versusxml.data.network.ApiFactory
 import com.vereskul.tc51versusxml.data.repository.OrdersRepositoryImpl
 import com.vereskul.tc51versusxml.domain.models.SupplierOrderModel
 import com.vereskul.tc51versusxml.domain.usecases.orders_case.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SupplierOrdersViewModel(application: Application):AndroidViewModel(application) {
@@ -69,7 +70,7 @@ class SupplierOrdersViewModel(application: Application):AndroidViewModel(applica
             _orders.value = it
         }
     }
-    private fun refreshFromRepository()=viewModelScope.launch {
+    private fun refreshFromRepository()=viewModelScope.launch(Dispatchers.IO) {
         Log.d("SupplierOrdersViewModel", "refresh from db")
         repository.downloadOrders()
         repository.uploadOrders()

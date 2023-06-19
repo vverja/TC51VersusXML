@@ -37,12 +37,8 @@ Wapp/src/main/java/com/vereskul/tc51versusxml/domain/usecases/users_case/LoginUs
 [app/src/main/java/com/vereskul/tc51versusxml/presentation/ui/login/LoginViewModelFactory.kt,c/1/c14012526a85356d234eca1322d7ce6edd2e0354
 ë
 aapp/src/main/java/com/vereskul/tc51versusxml/presentation/ui/online_order/OnlineOrderFormState.kt,3/0/30b0545f0be70d1ddeab670daa067893be8ab71d
-Ü
-Vapp/src/main/java/com/vereskul/tc51versusxml/presentation/ui/main/OrdersListAdapter.kt,b/f/bf39ad4ad3cf4d73835a4bae4b577a17872733ce
 x
 Happ/src/main/java/com/vereskul/tc51versusxml/domain/models/UsersModel.kt,a/8/a874f531a77ba984a9e89bb56b54fd1414ea4967
-Ç
-Rapp/src/main/java/com/vereskul/tc51versusxml/data/database/entities/UsersEntity.kt,f/6/f6f36c722e0a4f4b79c620c758d2ab31ad9995a3
 x
 Happ/src/main/java/com/vereskul/tc51versusxml/domain/models/SaveResult.kt,6/6/66fe00b3bb2a0e153d03cf7207a1a4cf52a76e32
 y
@@ -63,8 +59,6 @@ eapp/src/main/java/com/vereskul/tc51versusxml/domain/usecases/orders_case/GetOrd
 Qapp/src/main/java/com/vereskul/tc51versusxml/data/network/LocalDateTimeAdapter.kt,2/d/2d1227bd70fb0321147034dd003a1ad734092c3c
 É
 Sapp/src/main/java/com/vereskul/tc51versusxml/presentation/ui/login/LoginActivity.kt,8/2/827ccd495983f911466b2dca2c204a6ab124edc5
-Å
-Qapp/src/main/java/com/vereskul/tc51versusxml/presentation/ui/main/MainActivity.kt,1/6/1640047c1638b1af8cca07757ad365889845a818
 Ç
 Rapp/src/main/java/com/vereskul/tc51versusxml/data/repository/UserRepositoryImpl.kt,f/a/fa9d95f42fd642fbfb8500db9ffdad0748cb3e3a
 Ñ

@@ -10,6 +10,7 @@ import com.vereskul.tc51versusxml.R
 import com.vereskul.tc51versusxml.data.database.AppDb
 import com.vereskul.tc51versusxml.data.network.ApiFactory
 import com.vereskul.tc51versusxml.data.repository.OnlineOrderRepositoryImpl
+import com.vereskul.tc51versusxml.data.repository.OrdersRepositoryImpl
 import com.vereskul.tc51versusxml.domain.models.GoodsModel
 import com.vereskul.tc51versusxml.domain.models.ItemModel
 import com.vereskul.tc51versusxml.domain.models.SaveResult
@@ -55,6 +56,9 @@ class OnlineOrderViewModel(application: Application):AndroidViewModel(applicatio
     private var _currentOrder = MutableLiveData(
         SupplierOrderModel(orderId = "", date = LocalDateTime.now()))
 
+    val currentOrder: LiveData<SupplierOrderModel>
+        get() = _currentOrder
+
     init {
         setDefaultOrder()
     }
@@ -71,8 +75,7 @@ class OnlineOrderViewModel(application: Application):AndroidViewModel(applicatio
         }
     }
 
-    val currentOrder: LiveData<SupplierOrderModel>
-        get() = _currentOrder
+
 
     private var _currentGoodsList = MutableLiveData(
         listOf(GoodsModel())
@@ -133,6 +136,7 @@ class OnlineOrderViewModel(application: Application):AndroidViewModel(applicatio
     fun countTotalSum(){
         val sum = _currentGoodsList.value?.map { (it.qty ?: 0.00) * (it.price ?: 0.00) }?.sum()
         _totalSum.value = sum
+        _currentOrder.value?.amount = sum
     }
 
     fun addEmptyGoodsItem(){

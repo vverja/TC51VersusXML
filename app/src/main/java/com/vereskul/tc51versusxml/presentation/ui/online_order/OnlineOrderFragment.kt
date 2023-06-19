@@ -149,7 +149,7 @@ class OnlineOrderFragment : Fragment() {
                         binding.mainOnlineOrderLayout,
                         saveResult.success,
                         Snackbar.LENGTH_SHORT
-                    ).setDuration(3000)
+                    ).setDuration(1000)
 
                     snackbar.addCallback(object : Snackbar.Callback() {
                         override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {

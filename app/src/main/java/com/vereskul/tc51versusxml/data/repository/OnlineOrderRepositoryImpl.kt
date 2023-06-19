@@ -50,6 +50,7 @@ class OnlineOrderRepositoryImpl(
             val now = LocalDateTime.now()
             supplierOrderModel.downloadDate = now
             supplierOrderModel.startTime = now
+            supplierOrderModel.endTime = now
             val supplierOrdersWithGoodsEntity = supplierOrderModel.asDatabaseEntity()
             supplierOrdersDAO.insertOrder(supplierOrdersWithGoodsEntity.supplierOrder)
             goodsDAO.insertAll(supplierOrdersWithGoodsEntity.goods)
