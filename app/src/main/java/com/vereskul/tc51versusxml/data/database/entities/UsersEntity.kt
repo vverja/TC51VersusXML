@@ -3,22 +3,22 @@ package com.vereskul.tc51versusxml.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 import com.vereskul.tc51versusxml.domain.models.UsersModel
+import java.time.LocalDateTime
 
 @Entity(tableName = "users")
 data class UsersEntity (
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo("user_id")
-    var userId:Int = 0,
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name="display_name")
-    var displayName:String? = null,
+    var displayName:String,
     @ColumnInfo("password")
     var password:String? = null,
     @ColumnInfo("stock_code")
     var stockCode: String? = null,
     @ColumnInfo("stock_name")
-    var stockName: String? = null
+    var stockName: String? = null,
+    @ColumnInfo("last_login")
+    var lastLogin: LocalDateTime
 )
 
 fun UsersEntity.asDomainModel():UsersModel{

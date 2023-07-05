@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UsersDAO {
-    @Query("Select * FROM users LIMIT 1")
-    suspend fun getUser(): UsersEntity
+    @Query("Select * FROM users ORDER BY last_login DESC LIMIT 1")
+    suspend fun getUser(): UsersEntity?
 
     @Delete
     suspend fun deleteUser(user: UsersEntity)

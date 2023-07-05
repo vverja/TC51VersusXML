@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="viewmodel"
@@ -7,13 +9,14 @@
     </data>
 
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.order.OrderHeaderFragment">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-        <!-- TODO: Update blank fragment layout -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -23,29 +26,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
+                android:layout_marginEnd="5dp"
                 android:padding="4dp">
 
                 <TextView
                     android:id="@+id/text_number_label"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
+                    android:textSize="20sp"
                     android:layout_weight="1"
                     android:background="#CCCACA"
                     android:padding="4dp"
+                    android:text="@string/text_order_number"
                     tools:text="Номер: " />
 
                 <TextView
                     android:id="@+id/text_number"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="20sp"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
-                    android:gravity="end"
                     android:padding="4dp"
+                    android:text="@{viewmodel.order.number}"
                     android:textColor="@color/design_default_color_primary"
-
                     tools:text="№56" />
 
             </LinearLayout>
@@ -54,28 +59,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="4dp">
 
                 <TextView
                     android:id="@+id/text_date_label"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:background="#CCCACA"
+                    android:textSize="20sp"
                     android:padding="4dp"
+                    android:text="@string/text_order_date"
                     tools:text="Дата: " />
 
                 <TextView
                     android:id="@+id/text_date"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textSize="20sp"
                     android:background="@drawable/textview_border"
-                    android:gravity="end"
                     android:padding="4dp"
                     android:textColor="@color/design_default_color_primary"
+                    app:setLocalDateTime="@{viewmodel.order.date}"
                     tools:text="11.04.2023" />
             </LinearLayout>
 
@@ -83,27 +90,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="4dp">
 
                 <TextView
                     android:id="@+id/text_supplier_label"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:background="#CCCACA"
+                    android:textSize="20sp"
                     android:padding="4dp"
+                    android:text="@string/text_order_supplier"
                     tools:text="Поставщик: " />
 
                 <TextView
                     android:id="@+id/text_supplier"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
-                    android:gravity="end"
                     android:padding="4dp"
+                    android:textSize="20sp"
+                    android:text="@{viewmodel.order.supplier.isEmpty()? viewmodel.order.stock : viewmodel.order.supplier}"
                     android:textColor="@color/design_default_color_primary"
                     tools:text="Андрей закуски" />
             </LinearLayout>
@@ -112,27 +121,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="4dp">
 
                 <TextView
                     android:id="@+id/text_time_begin_label"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:background="#CCCACA"
                     android:padding="4dp"
+                    android:textSize="20sp"
+                    android:text="@string/text_order_begin"
                     tools:text="Время начала: " />
 
                 <TextView
                     android:id="@+id/text_time_begin"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
-                    android:gravity="end"
                     android:padding="4dp"
+                    android:textSize="20sp"
+                    app:setLocalDateTime="@{viewmodel.order.startTime}"
                     android:textColor="@color/design_default_color_primary"
                     tools:text="11.04.2023 11:50:20" />
             </LinearLayout>
@@ -141,50 +152,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="4dp">
 
                 <TextView
                     android:id="@+id/text_time_end_label"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:background="#CCCACA"
                     android:padding="4dp"
+                    android:textSize="20sp"
+                    android:text="@string/text_order_end"
                     tools:text="Время окончания: " />
 
                 <TextView
                     android:id="@+id/text_time_end"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
-                    android:gravity="end"
                     android:padding="4dp"
+                    android:textSize="20sp"
                     android:textColor="@color/design_default_color_primary"
+                    app:setLocalDateTime="@{viewmodel.order.endTime}"
                     tools:text="11.04.2023 11:50:20" />
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:orientation="horizontal"
-                android:padding="4dp">
-
-                <TextView
-                    android:id="@+id/text_stat"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="5dp"
-                    android:background="#CCCACA"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:text="TextView" />
-            </LinearLayout>
-
         </LinearLayout>
-
+        </ScrollView>
     </FrameLayout>
 </layout>

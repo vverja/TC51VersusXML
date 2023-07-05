@@ -10,7 +10,6 @@ import com.vereskul.tc51versusxml.R
 import com.vereskul.tc51versusxml.data.database.AppDb
 import com.vereskul.tc51versusxml.data.network.ApiFactory
 import com.vereskul.tc51versusxml.data.repository.OnlineOrderRepositoryImpl
-import com.vereskul.tc51versusxml.data.repository.OrdersRepositoryImpl
 import com.vereskul.tc51versusxml.domain.models.GoodsModel
 import com.vereskul.tc51versusxml.domain.models.ItemModel
 import com.vereskul.tc51versusxml.domain.models.SaveResult
@@ -65,7 +64,7 @@ class OnlineOrderViewModel(application: Application):AndroidViewModel(applicatio
     private fun setDefaultOrder() {
         viewModelScope.launch {
             val currentUser = currentUserUseCase()
-            selectedStock = StockModel(currentUser.stockCode ?: "", currentUser.stockName ?: "")
+            selectedStock = StockModel(currentUser?.stockCode ?: "", currentUser?.stockName ?: "")
             _currentOrder.value = SupplierOrderModel(
                     orderId = "",
                     date = LocalDateTime.now(),
@@ -94,7 +93,6 @@ class OnlineOrderViewModel(application: Application):AndroidViewModel(applicatio
 
     var selectedSupplier: SupplierModel? = null
     var selectedStock: StockModel? = null
-    val setOfSelectedItems = mutableSetOf<ItemModel>()
 
     fun getItems(){
         viewModelScope.launch {

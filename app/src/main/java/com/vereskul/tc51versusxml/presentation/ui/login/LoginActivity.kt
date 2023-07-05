@@ -40,9 +40,6 @@ class LoginActivity : AppCompatActivity() {
         val login = binding.login
         val loading = binding.loading
 
-//        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-//            .get(LoginViewModel::class.java)
-
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
@@ -71,8 +68,11 @@ class LoginActivity : AppCompatActivity() {
                 setResult(Activity.RESULT_OK)
                 finish()
             }
-
         })
+
+        loginViewModel.defaultUserName.observe(this){
+            username.setText(it)
+        }
 
         username.afterTextChanged {
             loginViewModel.loginDataChanged(

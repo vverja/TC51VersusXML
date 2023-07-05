@@ -31,6 +31,7 @@
     <string name="in_work">В роботі</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="begin_work">Почати</string>
+    <string name="begin_work_question">Почати роботу?</string>
     <string name="end_work">Закінчити</string>
     <string name="close_order">Закрити</string>
     <string name="order">Заказ</string>
@@ -59,5 +60,31 @@
     <string name="date_must_be_today">Дата повинна бути сьогоднішньою</string>
     <string name="susccess_saving_order">Накладну сбережено</string>
     <string name="save_order_error">Помилка збереження накладної</string>
-
+    <string name="text_order_number">Номер:</string>
+    <string name="text_order_date">Дата:</string>
+    <string name="text_order_supplier">Постачальник:</string>
+    <string name="text_order_begin">Час початку:</string>
+    <string name="text_order_end">Час закінчення:</string>
+    <string name="text_label_item_name">Назва товару:</string>
+    <string name="text_label_qty">Кількість в накладної:</string>
+    <string name="text_label_qty_fact">Кількість по факту:</string>
+    <string name="text_label_barcode">Штрихкод:</string>
+    <string name="text_buton_add_barcode">Додати штрихкод у 1с</string>
+    <string name="error_fact_below_zero">Значення не може бути менше нуля</string>
+    <string name="error_fact_not_digit">Має бути число!</string>
+    <string name="error_work_begin">Почніть роботу!</string>
+    <string name="ok">Так</string>
+    <string name="cancel">Відміна</string>
+    <string name="end_work_question">Закрити заказ?</string>
+    <string name="error_in_qty_quetion">В заказі є відхилення, продовжити?</string>
+    <string name="order_is_saved">Заказ збережено!</string>
+    <string name="error_order_saving">Помилка у збереженні заказу!</string>
+    <string name="its_tare">Це тара?</string>
+    <string name="error_barcode_question">Невірний штрихкод. Продовжити?</string>
+    <string name="barcode_not_found">Штрихкод не знайдено</string>
+    <string name="error_order_closed">Заказ вже закрито!</string>
+    <string name="order_is_over">Замовлення виконано!</string>
+    <string name="synchronize">Синхронізувати</string>
+    <string name="notify_title">Пройшло оновлення заказів</string>
+    <string name="notify_text">Отримано %1$d заказів, завантажено %2$d заказів</string>
 </resources>

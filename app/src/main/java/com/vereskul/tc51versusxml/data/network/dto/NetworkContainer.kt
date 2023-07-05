@@ -33,8 +33,10 @@ fun NetworkContainer.asDataBaseModel():List<SupplierOrdersWithGoodsEntity>{
                     name = goodsDTO.name,
                     units = goodsDTO.units,
                     qty = goodsDTO.qty,
+                    qtyFact = goodsDTO.qtyFact,
                     price = goodsDTO.price,
-                    barcode = goodsDTO.barcode
+                    barcode = goodsDTO.barcode,
+                    tare = goodsDTO.tare
                 )
             }
         )
@@ -61,8 +63,10 @@ fun NetworkContainer.asDomainModel():List<SupplierOrderModel>{
                     name = goodsDto.name,
                     units = goodsDto.units,
                     qty = goodsDto.qty,
+                    qtyFact = goodsDto.qtyFact,
                     price = goodsDto.price,
-                    barcode = goodsDto.barcode
+                    barcode = goodsDto.barcode,
+                    tare = goodsDto.tare
                 )
             }
         )

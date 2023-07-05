@@ -7,13 +7,15 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class LocalDateTimeAdapter: JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
-    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    private val format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+
     override fun serialize(
         src: LocalDateTime?,
         typeOfSrc: Type?,
         context: JsonSerializationContext?
     ): JsonElement {
-        return JsonPrimitive(formatter.format(src))
+        return JsonPrimitive(format.format(src))
     }
 
     override fun deserialize(
@@ -21,6 +23,6 @@ class LocalDateTimeAdapter: JsonSerializer<LocalDateTime>, JsonDeserializer<Loca
         typeOfT: Type?,
         context: JsonDeserializationContext?
     ): LocalDateTime {
-        return LocalDateTime.parse(json?.asString, formatter)
+        return LocalDateTime.parse(json?.asString, format)
     }
 }

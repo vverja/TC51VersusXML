@@ -7,6 +7,11 @@
         <item android:id="@+id/item_in_work" android:title="@string/in_work" android:icon="@drawable/yellow_circle"/>
         <item android:id="@+id/item_closed" android:title="@string/close_item" android:icon="@drawable/blue_circle"/>
         <item android:id="@+id/item_errors" android:title="@string/error_item" android:icon="@drawable/multiply"/>
+        <item android:id="@+id/refresh_orders"
+            android:title="@string/synchronize"
+            android:icon="@drawable/baseline_refresh_24"
+            android:iconTint="@color/white"
+            app:showAsAction="ifRoom"/>
     </group>
 
 </menu>

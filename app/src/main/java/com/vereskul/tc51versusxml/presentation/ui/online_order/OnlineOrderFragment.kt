@@ -14,7 +14,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.vereskul.tc51versusxml.R
 import com.vereskul.tc51versusxml.databinding.FragmentOnlineOrderBinding
-import com.vereskul.tc51versusxml.domain.models.StockModel
 import com.vereskul.tc51versusxml.domain.models.SupplierModel
 import com.vereskul.tc51versusxml.presentation.ui.login.afterTextChanged
 import kotlinx.coroutines.launch

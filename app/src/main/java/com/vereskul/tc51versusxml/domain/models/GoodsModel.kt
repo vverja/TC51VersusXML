@@ -10,6 +10,8 @@ data class GoodsModel (
     var name  : String? = null,
     var units : String? = null,
     var qty   : Double? = null,
+    var qtyFact: Double = 0.0,
     var price : Double? = null,
-    var barcode: String? = null
+    var barcode: String? = null,
+    var tare: Boolean = false
 ):Parcelable

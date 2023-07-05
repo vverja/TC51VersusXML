@@ -46,6 +46,7 @@ fun SupplierOrderModel.asDTO(): SupplierOrderDTO {
                 name = it.name,
                 units = it.units,
                 qty = it.qty,
+                qtyFact = it.qtyFact,
                 price = it.price,
                 barcode = it.barcode,
                 orderRef = "",
@@ -79,6 +80,7 @@ fun SupplierOrderModel.asDatabaseEntity(): SupplierOrdersWithGoodsEntity {
                 name = it.name,
                 units = it.units,
                 qty = it.qty,
+                qtyFact = it.qtyFact,
                 price = it.price,
                 barcode = it.barcode
             )

@@ -40,6 +40,7 @@ fun List<SupplierOrdersWithGoodsEntity>.asDomainModel():List<SupplierOrderModel>
                     name = goodsEntity.name,
                     units = goodsEntity.units,
                     qty = goodsEntity.qty,
+                    qtyFact = goodsEntity.qtyFact,
                     price = goodsEntity.price,
                     barcode = goodsEntity.barcode
                 )
@@ -70,8 +71,10 @@ fun List<SupplierOrdersWithGoodsEntity>.asDTO():List<SupplierOrderDTO>{
                     name = goods.name,
                     units = goods.units,
                     qty = goods.qty,
+                    qtyFact = goods.qtyFact,
                     price = goods.price,
-                    barcode = goods.barcode
+                    barcode = goods.barcode,
+                    tare = goods.tare
                 )
             }
         )
@@ -96,8 +99,10 @@ fun SupplierOrdersWithGoodsEntity.asDomainModel():SupplierOrderModel{
                     name = goodsEntity.name,
                     units = goodsEntity.units,
                     qty = goodsEntity.qty,
+                    qtyFact = goodsEntity.qtyFact,
                     price = goodsEntity.price,
-                    barcode = goodsEntity.barcode
+                    barcode = goodsEntity.barcode,
+                    tare = goodsEntity.tare
                 )
             }
         )

@@ -4,7 +4,7 @@ import com.vereskul.tc51versusxml.domain.OnlineOrderRepository
 import com.vereskul.tc51versusxml.domain.models.UsersModel
 
 class GetCurrentUserUseCase(private val repository: OnlineOrderRepository){
-    suspend operator fun invoke():UsersModel{
+    suspend operator fun invoke():UsersModel?{
         return repository.getCurrentUser()
     }
 }

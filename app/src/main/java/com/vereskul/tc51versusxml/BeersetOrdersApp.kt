@@ -22,12 +22,15 @@ class BeersetOrdersApp:Application() {
         WorkManager.initialize(this, workerConfiguration)
 
         val periodicWorkRequest = PeriodicWorkRequestBuilder<OrdersSynchronizationWorker>(
-            10, TimeUnit.MINUTES
+            REPEAT_INTERVAL_IN_MINUTES, TimeUnit.MINUTES
         ).build()
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
             OrdersSynchronizationWorker::class.java.name,
             ExistingPeriodicWorkPolicy.KEEP,
             periodicWorkRequest
         )
+    }
+    companion object{
+        private const val REPEAT_INTERVAL_IN_MINUTES = 5L
     }
 }

@@ -16,8 +16,12 @@ data class GoodsDTO (
     var units : String? = null,
     @SerializedName("qty")
     var qty   : Double? = null,
+    @SerializedName("qty_fact")
+    var qtyFact   : Double = 0.0,
     @SerializedName("price")
     var price : Double? = null,
     @SerializedName("barcode")
-    var barcode: String? = null
+    var barcode: String? = null,
+    @SerializedName("tare")
+    var tare: Boolean = false
 )

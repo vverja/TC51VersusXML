@@ -70,8 +70,8 @@ class OnlineOrderRepositoryImpl(
         //TODO make online saving of barcode
     }
 
-    override suspend fun getCurrentUser(): UsersModel {
-        return usersDAO.getUser().asDomainModel()
+    override suspend fun getCurrentUser(): UsersModel? {
+        return usersDAO.getUser()?.asDomainModel()
     }
 
     companion object{

@@ -13,5 +13,5 @@ interface OnlineOrderRepository {
     suspend fun getItemsList():List<ItemModel>
     suspend fun saveOrder(supplierOrderModel: SupplierOrderModel): SaveResult
     suspend fun saveBarcode()
-    suspend fun getCurrentUser(): UsersModel
+    suspend fun getCurrentUser(): UsersModel?
 }

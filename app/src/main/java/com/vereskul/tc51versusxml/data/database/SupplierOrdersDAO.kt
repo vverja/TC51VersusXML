@@ -5,7 +5,6 @@ import androidx.room.*
 import com.vereskul.tc51versusxml.data.database.entities.SupplierOrderEntity
 import com.vereskul.tc51versusxml.data.database.entities.SupplierOrdersWithGoodsEntity
 import com.vereskul.tc51versusxml.data.database.entities.UploadListEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface SupplierOrdersDAO {
@@ -14,7 +13,27 @@ interface SupplierOrdersDAO {
     fun getAllSupplierOrders(): LiveData<List<SupplierOrdersWithGoodsEntity>>
     @Transaction
     @Query("SELECT * from supplier_orders WHERE order_id =:orderId")
-    suspend fun getOrderById(orderId:String): SupplierOrdersWithGoodsEntity
+    suspend fun getOrderById(orderId:String): List<SupplierOrdersWithGoodsEntity>
+
+    @Transaction
+    @Query("SELECT * from supplier_orders WHERE supplier_code=''")
+    suspend fun getInnerOrders(): List<SupplierOrdersWithGoodsEntity>
+
+    @Transaction
+    @Query("SELECT * from supplier_orders WHERE supplier_code!=''")
+    suspend fun getAdventOrders(): List<SupplierOrdersWithGoodsEntity>
+
+    @Transaction
+    @Query("SELECT * from supplier_orders WHERE order_state =:orderStatus AND supplier_code=''")
+    suspend fun getOrdersByStatusAndInner(orderStatus: String):List<SupplierOrdersWithGoodsEntity>
+    @Transaction
+    @Query("SELECT * from supplier_orders WHERE order_state =:orderStatus AND supplier_code!=''")
+    suspend fun getOrdersByStatusAndNotInner(orderStatus: String):List<SupplierOrdersWithGoodsEntity>
+
+    @Transaction
+    @Query("SELECT * from supplier_orders WHERE order_id in (:orderId)")
+    suspend fun getOrderByListOfId(orderId:List<String>): List<SupplierOrdersWithGoodsEntity>
+
     @Transaction
     @Query("SELECT * from supplier_orders WHERE order_state =:orderStatus")
     fun getOrdersByStatus(orderStatus: String):LiveData<List<SupplierOrdersWithGoodsEntity>>
@@ -33,7 +52,7 @@ interface SupplierOrdersDAO {
 
     @Transaction
     @Query("Select * from upload_list where order_id in (:orderIdList)")
-    fun getOrdersUploadList(orderIdList: List<String>): Flow<List<UploadListEntity>>
+    suspend fun getOrdersUploadList(orderIdList: List<String>): List<UploadListEntity>
 
     @Transaction
     @Query(
@@ -41,7 +60,7 @@ interface SupplierOrdersDAO {
                 "join upload_list " +
                     " on supplier_orders.order_id = upload_list.order_id"
     )
-    fun getOrdersUploadListByInnerJoin(): Flow<List<SupplierOrdersWithGoodsEntity>>
+    suspend fun getOrdersUploadListByInnerJoin(): List<SupplierOrdersWithGoodsEntity>
 
     @Transaction
     @Query("Delete from upload_list")

@@ -26,8 +26,12 @@ data class GoodsEntity (
     var units : String? = null,
     @ColumnInfo("qty")
     var qty   : Double? = null,
+    @ColumnInfo("qty_fact")
+    var qtyFact   : Double = 0.0,
     @ColumnInfo("price")
     var price : Double? = null,
     @ColumnInfo("barcode")
-    var barcode: String? = null
+    var barcode: String? = null,
+    @ColumnInfo("tare")
+    var tare: Boolean = false
 )

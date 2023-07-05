@@ -20,6 +20,7 @@ object ApiFactory {
 
     var apiService: ApiService = Retrofit.Builder()
         //для конвертации Гсоном
+        //.addConverterFactory(GsonConverterFactory.create(GsonBuilder().serializeNulls().create()))
         .addConverterFactory(GsonConverterFactory.create(gson))
         //Подключаем РХджава
 //            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
@@ -47,6 +48,7 @@ object ApiFactory {
         //создаем сервис
         apiService =  Retrofit.Builder()
             //для конвертации Гсоном
+            //.addConverterFactory(GsonConverterFactory.create(GsonBuilder().serializeNulls().create()))
             .addConverterFactory(GsonConverterFactory.create(gson))
             //Подключаем РХджава
 //            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())

@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.vereskul.tc51versusxml.data.database.AppDb
-import com.vereskul.tc51versusxml.data.network.ApiFactory
 import com.vereskul.tc51versusxml.data.repository.UserRepositoryImpl
+import com.vereskul.tc51versusxml.domain.usecases.users_case.GetDefaultUserUseCase
 import com.vereskul.tc51versusxml.domain.usecases.users_case.LoginUseCase
 
 /**
@@ -17,12 +17,12 @@ class LoginViewModelFactory(private val application: Application) : ViewModelPro
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            val loginUseCase = LoginUseCase(
-                UserRepositoryImpl(
-                    AppDb.getInstance(application).getUsersDAO()
-                )
+            val repositoryImpl = UserRepositoryImpl(
+                AppDb.getInstance(application).getUsersDAO()
             )
-            return LoginViewModel(loginUseCase) as T
+            val loginUseCase = LoginUseCase(repositoryImpl)
+            val getDefaultUserUseCase = GetDefaultUserUseCase(repositoryImpl)
+            return LoginViewModel(loginUseCase, getDefaultUserUseCase) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

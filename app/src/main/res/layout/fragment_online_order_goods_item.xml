@@ -90,9 +90,14 @@
                 android:text="@={currentGoodsModel.barcode}"
                 android:inputType="number"
                 android:padding="5dp" />
-
-
-
+            <CheckBox
+                android:id="@+id/check_tare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@={currentGoodsModel.tare}"
+                android:padding="5dp"
+                android:text="@string/its_tare"
+                android:layout_margin="5dp"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </FrameLayout>
 </layout>

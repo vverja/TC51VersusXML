@@ -29,5 +29,5 @@ interface ApiService {
     @GET("inner_orders/by_supplier")
     suspend fun getInnerOrders(): NetworkContainer
     @POST("inner_orders")
-    suspend fun saveInnerOrder(supplierOrderDTO: SupplierOrderDTO): SaveResultDTO
+    suspend fun saveInnerOrder(@Body supplierOrderDTO: SupplierOrderDTO): SaveResultDTO
 }
